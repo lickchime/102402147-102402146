@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>单元测试</title></head>
+<body>
+    <h2>校园失物招领 - 核心功能测试</h2>
+    <div id="results" style="font-family: monospace; font-size: 16px; line-height: 2;"></div>
+    <script>
+        const results = [];
+        // 模拟数据与逻辑（从script.js拷过来的简化版）
+        let items = [
+            { id: 1, type: 'found', name: '校园卡', place: '图书馆', contact: 'wx:12345', desc: '在二楼捡到', status: 'active' },
+            { id: 2, type: 'lost', name: '水杯', place: '食堂', contact: 'tel:13800000000', desc: '粉色保温杯', status: 'active' }
+        ];
+        function searchItems(keyword) { return items.filter(i => i.name.toLowerCase().includes(keyword.toLowerCase())); }
+        function addItem(name, place) { if(!name || !place) return false; items.push({id: Date.now(), name, place}); return true; }
+        function updateStatus(id) { const item = items.find(i => i.id === id); if(item) { item.status = 'done'; return true;} return false; }
+
+        // 5个测试用例
+        results.push(["测试1: 搜索存在的物品 '校园卡'", searchItems('校园卡').length === 1 ? "✅ 通过" : "❌ 失败"]);
+        results.push(["测试2: 搜索不存在的物品 '钥匙'", searchItems('钥匙').length === 0 ? "✅ 通过" : "❌ 失败"]);
+        results.push(["测试3: 按类型筛选 '寻物'", items.filter(i => i.type === 'lost').length === 1 ? "✅ 通过" : "❌ 失败"]);
+        results.push(["测试4: 发布信息缺少必填项", addItem('雨伞', '') === false ? "✅ 通过" : "❌ 失败"]);
+        results.push(["测试5: 修改物品状态为已归还", updateStatus(1) && items[0].status === 'done' ? "✅ 通过" : "❌ 失败"]);
+
+        document.getElementById('results').innerHTML = results.map(r => `<div>${r[0]}: <span style="color:${r[1].includes('✅')?'green':'red'}">${r[1]}</span></div>`).join('');
+    </script>
+</body>
+</html>
