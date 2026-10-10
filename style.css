@@ -1,0 +1,23 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+body { background: #f5f5f5; padding-bottom: 60px; }
+.header { background: #1a73e8; color: white; text-align: center; padding: 15px; font-size: 18px; font-weight: bold; position: sticky; top: 0; z-index: 10; }
+.page { display: none; padding: 15px; }
+.page.active { display: block; }
+.search-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+.search-bar input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
+.search-bar button { padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 20px; }
+.tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+.tab { flex: 1; padding: 8px; background: white; border: 1px solid #ddd; border-radius: 5px; }
+.tab.active { background: #1a73e8; color: white; border-color: #1a73e8; }
+.list-container { display: flex; flex-direction: column; gap: 10px; }
+.card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.card h4 { margin-bottom: 5px; color: #333; }
+.card p { font-size: 13px; color: #666; margin-bottom: 5px; }
+.card .status { font-size: 12px; padding: 2px 8px; border-radius: 10px; background: #e8f0fe; color: #1a73e8; }
+.card .status.done { background: #e6f4ea; color: #137333; }
+.fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: #1a73e8; color: white; font-size: 24px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+input, select, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
+textarea { height: 80px; }
+.btn-primary { width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 16px; margin-bottom: 10px; }
+.btn-secondary { width: 100%; padding: 12px; background: #eee; color: #333; border: none; border-radius: 8px; font-size: 16px; }
+.btn-success { width: 100%; padding: 12px; background: #137333; color: white; border: none; border-radius: 8px; font-size: 16px; margin-bottom: 10px; }

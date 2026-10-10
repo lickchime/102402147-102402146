@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园失物招领</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="header">校园失物招领</div>
+
+    <!-- 页面1：首页 -->
+    <div id="page-home" class="page active">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="搜索物品名称...">
+            <button onclick="goSearch()">搜索</button>
+        </div>
+        <div class="tabs">
+            <button onclick="filterType('all')" class="tab active">全部</button>
+            <button onclick="filterType('lost')" class="tab">寻物</button>
+            <button onclick="filterType('found')" class="tab">招领</button>
+        </div>
+        <div id="item-list" class="list-container"></div>
+        <button class="fab" onclick="showPage('page-publish')">+ 发布</button>
+    </div>
+
+    <!-- 页面2：发布页 -->
+    <div id="page-publish" class="page">
+        <h3>发布信息</h3>
+        <select id="pub-type">
+            <option value="lost">寻物启事</option>
+            <option value="found">失物招领</option>
+        </select>
+        <input type="text" id="pub-name" placeholder="物品名称（如：校园卡）">
+        <input type="text" id="pub-place" placeholder="地点（如：图书馆）">
+        <input type="text" id="pub-contact" placeholder="联系方式（微信/电话）">
+        <textarea id="pub-desc" placeholder="补充描述..."></textarea>
+        <button class="btn-primary" onclick="publishItem()">立即发布</button>
+        <button class="btn-secondary" onclick="showPage('page-home')">返回首页</button>
+    </div>
+
+    <!-- 页面3：搜索页 -->
+    <div id="page-search" class="page">
+        <h3>搜索结果</h3>
+        <div id="search-results" class="list-container"></div>
+        <button class="btn-secondary" onclick="showPage('page-home')">返回首页</button>
+    </div>
+
+    <!-- 页面4：详情页 -->
+    <div id="page-detail" class="page">
+        <h3>物品详情</h3>
+        <div id="detail-content"></div>
+        <button class="btn-primary" id="btn-contact" onclick="copyContact()">复制联系方式</button>
+        <button class="btn-success" id="btn-update" onclick="updateStatus()">标记为已找到/已归还</button>
+        <button class="btn-secondary" onclick="showPage('page-home')">返回首页</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
