@@ -9,15 +9,22 @@ function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     if (id === 'page-home') renderList(items);
+    window.scrollTo(0, 0);
 }
 
 // 渲染列表
 function renderList(data) {
     const list = document.getElementById('item-list');
+    if (data.length === 0) {
+        list.innerHTML = '<div class="empty-state"><span class="icon">📭</span>暂无相关信息</div>';
+        return;
+    }
     list.innerHTML = data.map(item => `
-        <div class="card" onclick="openDetail(${item.id})">
-            <h4>${item.name} <span class="status ${item.status === 'done' ? 'done' : ''}">${item.type === 'lost' ? '寻物' : '招领'} · ${item.status === 'done' ? '已完成' : '进行中'}</span></h4>
-            <p>📍 ${item.place}</p>
+        <div class="card ${item.type}" onclick="openDetail(${item.id})">
+            <h4>${item.name}
+                <span class="status ${item.type}-tag ${item.status === 'done' ? 'done' : ''}">${item.type === 'lost' ? '寻物' : '招领'} · ${item.status === 'done' ? '已完成' : '进行中'}</span>
+            </h4>
+            <p class="place">📍 ${item.place}</p>
         </div>
     `).join('');
 }
@@ -53,9 +60,19 @@ function publishItem() {
 function goSearch() {
     const kw = document.getElementById('search-input').value.trim().toLowerCase();
     const results = items.filter(i => i.name.toLowerCase().includes(kw));
-    document.getElementById('search-results').innerHTML = results.length ?
-        results.map(item => `<div class="card" onclick="openDetail(${item.id})"><h4>${item.name}</h4><p>📍 ${item.place}</p></div>`).join('') :
-        '<p style="text-align:center;color:#999;">没有找到相关物品</p>';
+    const box = document.getElementById('search-results');
+    if (results.length === 0) {
+        box.innerHTML = '<div class="empty-state"><span class="icon">🔍</span>没有找到相关物品</div>';
+    } else {
+        box.innerHTML = results.map(item => `
+            <div class="card ${item.type}" onclick="openDetail(${item.id})">
+                <h4>${item.name}
+                    <span class="status ${item.type}-tag ${item.status === 'done' ? 'done' : ''}">${item.type === 'lost' ? '寻物' : '招领'} · ${item.status === 'done' ? '已完成' : '进行中'}</span>
+                </h4>
+                <p class="place">📍 ${item.place}</p>
+            </div>
+        `).join('');
+    }
     showPage('page-search');
 }
 
@@ -64,16 +81,24 @@ let currentDetailId = null;
 function openDetail(id) {
     const item = items.find(i => i.id === id);
     currentDetailId = id;
+    const typeText = item.type === 'lost' ? '寻物启事' : '失物招领';
     document.getElementById('detail-content').innerHTML = `
-        <h3>${item.name}</h3>
-        <p style="margin:10px 0;">类型：${item.type === 'lost' ? '寻物' : '招领'}</p>
-        <p>地点：${item.place}</p>
-        <p>描述：${item.desc || '无'}</p>
-        <p>状态：${item.status === 'done' ? '已完成' : '进行中'}</p>
+        <div class="detail-card">
+            <div class="detail-header ${item.type}">
+                <div class="title">${item.name}</div>
+                <div class="tag">${typeText}</div>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row"><span class="label">📍 地点</span><span class="value">${item.place}</span></div>
+                <div class="detail-row"><span class="label">📝 描述</span><span class="value">${item.desc || '无'}</span></div>
+                <div class="detail-row"><span class="label">📞 联系</span><span class="value">${item.contact}</span></div>
+                <span class="detail-status ${item.status}">${item.status === 'done' ? '✅ 已完成' : '⏳ 进行中'}</span>
+            </div>
+        </div>
     `;
     document.getElementById('btn-contact').style.display = item.status === 'done' ? 'none' : 'block';
     document.getElementById('btn-update').style.display = item.status === 'done' ? 'none' : 'block';
-    document.getElementById('btn-contact').innerText = '复制联系方式: ' + item.contact;
+    document.getElementById('btn-contact').innerText = '📋 复制联系方式: ' + item.contact;
     showPage('page-detail');
 }
 
